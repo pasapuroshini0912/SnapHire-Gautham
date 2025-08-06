@@ -1,0 +1,72 @@
+import mongoose from "mongoose";
+
+const jobSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: [true, "Please Enter Job Title"],
+    },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    description: {
+      type: String,
+      required: [true, "Please Enter Job Description"],
+    },
+    requirements: [
+      {
+        type: String,
+      },
+    ],
+    experienceLevel: {
+      type: Number,
+      required: true,
+    },
+    salary: {
+      type: Number,
+      required: true,
+    },
+    locations: {
+      type: String,
+      required: true,
+    },
+    jobType: {
+      type: String,
+      required: true,
+      enum: ["Full Time", "Part Time", "Contract", "Internship"],
+    },
+    positions: {
+      type: Number,
+      required: true,
+    },
+    company: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Company",
+      required: true,
+    },
+    created_by: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    applications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Application",
+      },
+    ],
+    blockchainPayment: {
+      transactionHash: { type: String },
+      amount: { type: String },
+      currency: { type: String, default: "ETH" },
+      paid: { type: Boolean, default: false },
+      paidAt: { type: Date },
+    },
+    tags: [{ type: String }],
+    aiExtractedSkills: [{ type: String }],
+  },
+  { timestamps: true }
+);
+
+export const Job = mongoose.model("Job", jobSchema);

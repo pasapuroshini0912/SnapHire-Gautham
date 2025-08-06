@@ -1,0 +1,157 @@
+import AppliedJobsTable from "@/components/AppliedJobsTable";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";nts/ui/avatar";
+          <h2 className="font-semibold tracking-wider mb-2">Resume </h2>
+          {user?.profile?.resume ? (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1'}/uploads/${user?.profile?.resume}`}
+              className="text-primary cursor-pointer hover:underline inline-flex items-center gap-2"
+            >
+              <span>{user?.profile?.resumeOriginalName || 'View Resume'}</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          ) : (
+            <Badge variant="destructive" className="mr-2 cursor-pointer">
+              Resume Not Added
+            </Badge>
+          )}
+        </div>import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import UpdateProfile from "@/components/UpdateProfile";
+import { useGetAppliedApplicationsQuery } from "@/redux/api/applicationsApi";
+import { Contact, Mail, Pen, Linkedin, Wallet, Sparkles } from "lucide-react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+
+const Profile = () => {
+  const [open, setOpen] = useState(false);
+  const { user } = useSelector((store) => store.user);
+
+  const { data, isLoading, error } = useGetAppliedApplicationsQuery();
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  return (
+    <div className="py-8">
+      <div className="border p-4 rounded-md relative shadow-md">
+        <div className="flex items-center gap-8 mb-4 flex-wrap sm:flex-nowrap">
+          <Avatar className="h-24 w-24">
+            <AvatarImage
+              src={
+                user?.profile?.profilePhoto
+                  ? user?.profile?.profilePhoto
+                  : "https://avatars.githubusercontent.com/u/124599"
+              }
+              alt={user?.fullName}
+            />
+          </Avatar>
+          <div className="mr-8">
+            <h2 className="font-bold">{user?.fullName}</h2>
+            <p>{user?.profile?.bio}</p>
+          </div>
+        </div>
+        <div className="absolute right-2 top-2">
+          <Button onClick={() => setOpen(true)} variant="outline">
+            <Pen />
+          </Button>
+        </div>
+        <div className="border-t pt-4">
+          <div className="flex items-center gap-3 mb-2">
+            <Mail />
+            <span>{user?.email}</span>
+          </div>
+          <div className="flex items-center gap-3 mb-2">
+            <Contact />
+            <span>{user?.phoneNumber}</span>
+          </div>
+          {user?.profile?.linkedinUrl && (
+            <div className="flex items-center gap-3 mb-2">
+              <Linkedin className="text-blue-600" />
+              <a 
+                href={user.profile.linkedinUrl} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                LinkedIn Profile
+              </a>
+            </div>
+          )}
+          {user?.profile?.walletAddress && (
+            <div className="flex items-center gap-3 mb-2">
+              <Wallet className="text-purple-600" />
+              <span className="font-mono text-sm">
+                {user.profile.walletAddress.slice(0, 6)}...{user.profile.walletAddress.slice(-4)}
+              </span>
+            </div>
+          )}
+        </div>
+        
+        <div className="mt-4 border-t pt-4">
+          <h2 className="font-semibold tracking-wider mb-2">Manual Skills</h2>
+          {!user?.profile?.skills || user.profile.skills.length === 0 ? (
+            <Badge variant="destructive" className="mr-2 cursor-pointer">
+              Skills Not Added
+            </Badge>
+          ) : (
+            user?.profile?.skills.map((skill, index) => (
+              <Badge className="mr-2 cursor-pointer" key={index}>
+                {skill}
+              </Badge>
+            ))
+          )}
+        </div>
+
+        <div className="mt-4 border-t pt-4">
+          <h2 className="font-semibold tracking-wider mb-2 flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-yellow-600" />
+            AI-Extracted Skills
+          </h2>
+          {!user?.profile?.aiExtractedSkills || user.profile.aiExtractedSkills.length === 0 ? (
+            <Badge variant="secondary" className="mr-2 cursor-pointer">
+              No AI Skills Detected
+            </Badge>
+          ) : (
+            user?.profile?.aiExtractedSkills.map((skill, index) => (
+              <Badge variant="secondary" className="mr-2 cursor-pointer" key={index}>
+                {skill}
+              </Badge>
+            ))
+          )}
+        </div>
+
+        <div className="mt-4 border-t pt-4">
+          <h2 className="font-semibold tracking-wider mb-2">Resume </h2>
+          {user?.profile?.resume ? (
+            <a
+              target="_blank"
+              href={user?.profile?.resume}
+              className=" text-primary cursor-pointer hover:underline"
+            >
+              {user?.profile?.resumeOriginalName}
+            </a>
+          ) : (
+            <Badge variant="destructive" className="mr-2 cursor-pointer">
+              Resume Not Added
+            </Badge>
+          )}
+        </div>
+      </div>
+
+      <div className="mt-6 border p-4 rounded-md relative shadow-md">
+        <h2 className="font-semibold tracking-wider mb-2 text-lg">
+          Applied Jobs{" "}
+        </h2>
+        <AppliedJobsTable data={data} />
+      </div>
+
+      <UpdateProfile open={open} setOpen={setOpen} />
+    </div>
+  );
+};
+
+export default Profile;
