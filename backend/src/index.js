@@ -33,6 +33,10 @@ app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 app.use("/api/v1/post", postRoute);
 
+app.get("/", (req, res) => {
+  res.send("✅ SnapHire Backend is live");
+});
+
 app.listen(PORT, () => {
   connectDB();
   console.log(`Server Is Running | PORT : ${PORT}`);
