@@ -47,6 +47,13 @@ A modern, feature-rich job portal where recruiters can post jobs (with payment i
 <img width="100%" alt="Payment While Posting" src="https://github.com/user-attachments/assets/30ed49e0-154a-4623-87dc-c445422f9f0a" />
 
 ---
+<img width="1453" height="777" alt="Screenshot 2025-08-06 at 1 10 31 PM" src="https://github.com/user-attachments/assets/ef8ae03d-ffd0-4aba-b9be-cc96564ff70c" />
+
+
+<img width="1435" height="792" alt="Screenshot 2025-08-06 at 1 12 05 PM" src="https://github.com/user-attachments/assets/af9211c3-54f2-494c-aa6c-ed7825fd9d0b" />
+
+<img width="1456" height="778" alt="Screenshot 2025-08-06 at 1 12 25 PM" src="https://github.com/user-attachments/assets/685d2754-2ead-4fe0-b183-43a3ff788ea8" />
+
 
 ## 🛠️ Tech Stack
 
